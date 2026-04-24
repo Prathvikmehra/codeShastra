@@ -1,4 +1,5 @@
 import React from 'react';
+import Navbar from '@/components/layout/Navbar';
 import HeroSection from './components/HeroSection';
 import GapSection from './components/GapSection';
 import MethodologySection from './components/MethodologySection';
@@ -7,7 +8,8 @@ import CtaSection from './components/CtaSection';
 
 const HomePage = () => {
   return (
-    <main className="flex flex-col min-h-screen">
+    <main className="flex flex-col min-h-screen pt-16 bg-bg text-text-primary transition-colors duration-200">
+      <Navbar />
       <HeroSection />
       <GapSection />
       <MethodologySection />

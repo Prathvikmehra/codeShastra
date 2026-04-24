@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { FiLogOut, FiUser } from 'react-icons/fi';
+import { FiLogOut, FiUser, FiMoon, FiSun } from 'react-icons/fi';
 import { ROUTES } from '@/utils/constants';
 import { selectIsAuthenticated, selectUser } from '@/store/slices/authSlice';
 import { clearAuthData } from '@/utils/storage';
-// In a real app we'd import a logout action from authSlice, but for now we'll do it manually or via a placeholder action
 
 /**
  * Navbar Component
@@ -17,16 +16,29 @@ export const Navbar = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const user = useSelector(selectUser);
 
+  // Theme state
+  const [isDark, setIsDark] = useState(
+    document.documentElement.getAttribute('data-theme') === 'dark'
+  );
+
+  const toggleTheme = () => {
+    const newTheme = isDark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    setIsDark(!isDark);
+  };
+
+  useEffect(() => {
+    // Sync state on mount just in case
+    setIsDark(document.documentElement.getAttribute('data-theme') === 'dark');
+  }, []);
+
   const handleLogout = () => {
-    // 1. Clear storage
     clearAuthData();
-    // 2. Dispatch logout action (assuming we'll add one to authSlice soon, or just reload)
-    // dispatch(logout());
-    window.location.href = ROUTES.LOGIN; // Force reload to clear all state
+    window.location.href = ROUTES.LOGIN;
   };
 
   return (
-    <nav className="fixed top-0 w-full bg-white border-b border-gray-200 z-50 h-16 shadow-sm">
+    <nav className="w-full bg-white dark:bg-surface border-b border-gray-200 dark:border-border z-50 h-16 shadow-sm transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
         <div className="flex justify-between items-center h-full">
           
@@ -35,20 +47,37 @@ export const Navbar = () => {
              <div className="w-8 h-8 bg-primary rounded-md flex items-center justify-center transition-transform group-hover:scale-105">
               <span className="text-white font-bold text-lg leading-none">{'</>'}</span>
             </div>
-            <span className="text-xl font-bold tracking-tight text-gray-900">CodeShastra</span>
+            <span className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">CodeShastra</span>
           </Link>
+
+          {/* Center Links (Optional, matching image) */}
+          <div className="hidden md:flex space-x-8 text-sm font-medium text-gray-600 dark:text-gray-300">
+            <Link to={ROUTES.HOME} className="hover:text-primary transition-colors">Landing</Link>
+            <Link to="#" className="hover:text-primary transition-colors">Courses</Link>
+            <Link to="#" className="hover:text-primary transition-colors">Mentors</Link>
+          </div>
 
           {/* Right Side Actions */}
           <div className="flex items-center gap-4">
+            
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 text-gray-500 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
+              aria-label="Toggle theme"
+            >
+              {isDark ? <FiSun size={20} /> : <FiMoon size={20} />}
+            </button>
+
             {isAuthenticated ? (
               <div className="flex items-center gap-4">
-                <span className="text-sm font-medium text-gray-700 hidden sm:block">
+                <span className="text-sm font-medium text-gray-700 dark:text-gray-200 hidden sm:block">
                   Hi, {user?.name || 'Student'}
                 </span>
                 
                 <button
                   onClick={() => navigate(ROUTES.DASHBOARD)}
-                  className="p-2 text-gray-500 hover:text-primary hover:bg-gray-100 rounded-full transition-colors"
+                  className="p-2 text-gray-500 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
                   aria-label="Profile"
                 >
                   <FiUser size={20} />
@@ -56,7 +85,7 @@ export const Navbar = () => {
 
                 <button
                   onClick={handleLogout}
-                  className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors"
+                  className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-colors"
                   aria-label="Log out"
                 >
                   <FiLogOut size={20} />
@@ -66,12 +95,12 @@ export const Navbar = () => {
               <div className="flex gap-3">
                 <Link
                   to={ROUTES.LOGIN}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
+                  className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
                 >
                   Log in
                 </Link>
                 <Link
-                  to={ROUTES.REGISTER}
+                  to={ROUTES.SIGNUP}
                   className="px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary/90 rounded-md shadow-sm transition-colors"
                 >
                   Sign up
