@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { FiLogOut, FiUser, FiMoon, FiSun } from 'react-icons/fi';
+import { FiLogOut, FiUser } from 'react-icons/fi';
 import { ROUTES } from '@/utils/constants';
 import { selectIsAuthenticated, selectUser } from '@/store/slices/authSlice';
 import { clearAuthData } from '@/utils/storage';
@@ -15,22 +15,6 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const user = useSelector(selectUser);
-
-  // Theme state
-  const [isDark, setIsDark] = useState(
-    document.documentElement.getAttribute('data-theme') === 'dark'
-  );
-
-  const toggleTheme = () => {
-    const newTheme = isDark ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', newTheme);
-    setIsDark(!isDark);
-  };
-
-  useEffect(() => {
-    // Sync state on mount just in case
-    setIsDark(document.documentElement.getAttribute('data-theme') === 'dark');
-  }, []);
 
   const handleLogout = () => {
     clearAuthData();
@@ -60,15 +44,6 @@ export const Navbar = () => {
           {/* Right Side Actions */}
           <div className="flex items-center gap-4">
             
-            {/* Theme Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="p-2 text-gray-500 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
-              aria-label="Toggle theme"
-            >
-              {isDark ? <FiSun size={20} /> : <FiMoon size={20} />}
-            </button>
-
             {isAuthenticated ? (
               <div className="flex items-center gap-4">
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-200 hidden sm:block">
