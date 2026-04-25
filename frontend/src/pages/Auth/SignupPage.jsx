@@ -1,37 +1,66 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { FiGithub } from 'react-icons/fi';
+import { FiGithub, FiAlertCircle } from 'react-icons/fi';
 import { FcGoogle } from 'react-icons/fc';
 import { ROUTES } from '@/utils/constants';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import Card from '@/components/ui/Card';
+import { loginSuccess } from '@/store/slices/authSlice';
+import { setToken, setUser } from '@/utils/storage';
 
 export const SignupPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
+  const [error, setError] = useState('');
+  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
 
   const handleChange = (e) => {
     const { id, value } = e.target;
+    setError('');
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+
+    if (!formData.name || !formData.email || !formData.password) {
+      setError('Please fill in all fields.');
+      return;
+    }
+    if (formData.password.length < 8) {
+      setError('Password must be at least 8 characters long.');
+      return;
+    }
+
     setIsLoading(true);
-    // TODO: Connect to backend API via authService.register
-    setTimeout(() => {
+    try {
+      // ── LocalStorage-based mock auth ────────────────────────────
+      // In production: replace this block with authService.register(formData)
+      const existing = JSON.parse(localStorage.getItem('cs_mock_user') || 'null');
+      if (existing && existing.email === formData.email) {
+        throw new Error('An account with this email already exists. Please log in.');
+      }
+
+      // Save the mock user to localStorage
+      const newUser = { id: Date.now().toString(), name: formData.name, email: formData.email, password: formData.password };
+      localStorage.setItem('cs_mock_user', JSON.stringify(newUser));
+
+      // Build a mock token and dispatch to Redux
+      const mockToken = btoa(JSON.stringify({ id: newUser.id, email: newUser.email }));
+      const user = { id: newUser.id, name: newUser.name, email: newUser.email, role: 'student' };
+      setToken(mockToken);
+      setUser(user);
+      dispatch(loginSuccess({ user, token: mockToken }));
+      navigate(ROUTES.DASHBOARD, { replace: true });
+    } catch (err) {
+      setError(err.message || 'Registration failed. Please try again.');
+    } finally {
       setIsLoading(false);
-      // Mock successful registration
-      navigate(ROUTES.DASHBOARD);
-    }, 1500);
+    }
   };
 
   return (
@@ -62,6 +91,13 @@ export const SignupPage = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Error Banner */}
+        {error && (
+          <div className="flex items-start gap-2.5 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
+            <FiAlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+            <span>{error}</span>
+          </div>
+        )}
         <Input
           id="name"
           label="Full Name"
