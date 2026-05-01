@@ -6,6 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import AuthLayout from '@/components/layout/AuthLayout';
 import MainLayout from '@/components/layout/MainLayout';
+import DashboardLayout from '@/components/layout/DashboardLayout';
 
 const HomePage = lazy(() => import('@/pages/Home/HomePage'));
 const LoginPage = lazy(() => import('@/pages/Auth/LoginPage'));
@@ -13,9 +14,11 @@ const SignupPage = lazy(() => import('@/pages/Auth/SignupPage'));
 const DebuggingLab = lazy(() => import('@/pages/Labs/DebuggingLab'));
 const DashboardPage = lazy(() => import('@/pages/Dashboard/DashboardPage'));
 const CoursesPage = lazy(() => import('@/pages/Labs/CoursesPage'));
-// const ProjectsPage = lazy(() => import('@/pages/Projects/ProjectsPage'));
+const ProjectsPage = lazy(() => import('@/pages/Projects/ProjectsPage'));
+const ProjectDetail = lazy(() => import('@/pages/Projects/ProjectDetail'));
 // const ChallengesPage = lazy(() => import('@/pages/Challenges/ChallengesPage'));
-// const MentorsPage = lazy(() => import('@/pages/Mentors/MentorsPage'));
+const ChallengesPage = lazy(() => import('@/pages/Challenges/ChallengesPage'));
+const ChallengeDetail = lazy(() => import('@/pages/Challenges/ChallengeDetail'));
 // const ProfilePage = lazy(() => import('@/pages/Profile/ProfilePage'));
 
 // ── Loading Fallback ───────────────────────────────────────────
@@ -54,14 +57,19 @@ function AppRoutes() {
 
         {/* Protected Routes — require authentication */}
         <Route element={<ProtectedRoute />}>
-          <Route element={<MainLayout />}>
+          
+          {/* Global App Layout for authenticated users (Sidebar) */}
+          <Route element={<DashboardLayout />}>
             <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
             <Route path={ROUTES.DEBUGGING_LAB} element={<DebuggingLab />} />
             <Route path={ROUTES.LABS} element={<CoursesPage />} />
-            <Route path={ROUTES.PROJECTS} element={<div>Projects (Coming Soon)</div>} />
-            <Route path={ROUTES.CHALLENGES} element={<div>Challenges (Coming Soon)</div>} />
+            <Route path={ROUTES.PROJECTS} element={<ProjectsPage />} />
+            <Route path={`${ROUTES.PROJECTS}/:id`} element={<ProjectDetail />} />
+            <Route path={ROUTES.CHALLENGES} element={<ChallengesPage />} />
+            <Route path="/challenges/:id" element={<ChallengeDetail />} />
             <Route path={ROUTES.MENTORS} element={<div>Mentors (Coming Soon)</div>} />
-            <Route path={ROUTES.PROFILE} element={<div>Profile (Coming Soon)</div>} />
+            <Route path="/leaderboard" element={<div>Leaderboard (Coming Soon)</div>} />
+            <Route path="/profile" element={<div>Profile (Coming Soon)</div>} />
           </Route>
         </Route>
 
