@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useSelector } from 'react-redux';
-
+import { Toaster } from 'react-hot-toast';
 import AppRoutes from '@/routes/AppRoutes';
 import { createMuiTheme } from '@/theme/muiTheme';
 
@@ -24,6 +24,7 @@ function App() {
   return (
     <MuiThemeProvider theme={muiTheme}>
       <CssBaseline />
+      <Toaster position="top-right" />
       <AppRoutes />
     </MuiThemeProvider>
   );
