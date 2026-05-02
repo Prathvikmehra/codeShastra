@@ -9,65 +9,24 @@ import Button from '@/components/ui/Button';
 const PROJECT_TABS = ['All Tech', 'Node.js', 'React', 'Python', 'Rust'];
 
 const PROJECTS = [
-  {
-    id: 1,
-    title: 'Build a Task Management API',
-    difficulty: 'SENIOR',
-    description: 'Architecture a high-performance RESTful API with complex relation...',
-    progress: 65,
-    tech: 'Node.js',
-    techIcon: <FaNodeJs className="text-green-600" />,
-    actionText: 'View Project',
-    actionVariant: 'outline', // light filled
-    avatars: ['https://i.pravatar.cc/150?u=1'],
-    avatarExtra: '+4',
-  },
-  {
-    id: 2,
-    title: 'E-commerce Checkout Flow',
-    difficulty: 'JUNIOR',
-    description: 'Design and implement a multi-step checkout experience using React,...',
-    progress: 12,
-    tech: 'React',
-    techIcon: <FaReact className="text-blue-500" />,
-    actionText: 'View Project',
-    actionVariant: 'outline',
-    avatars: ['https://i.pravatar.cc/150?u=2'],
-  },
-  {
-    id: 3,
-    title: 'Real-time Data Dashboard',
-    difficulty: 'MID-LEVEL',
-    description: 'Develop a socket-based dashboard that visualizes live crypto-market...',
-    progress: 0,
-    tech: 'Python',
-    techIcon: <FaPython className="text-yellow-500" />,
-    actionText: 'Start Project',
-    actionVariant: 'primary',
-    isNew: true, // Star icon, left border
-  },
-  {
-    id: 4,
-    title: 'CLI Portfolio Manager',
-    difficulty: 'MID-LEVEL',
-    description: 'Build a robust command-line tool for managing investment portfolio...',
-    progress: 100,
-    tech: 'Rust',
-    techIcon: <FaRust className="text-orange-600" />,
-    actionText: 'Review Docs',
-    actionVariant: 'outline',
-  },
-  {
-    id: 5,
-    title: 'Microservices Orchestrator',
-    difficulty: 'SENIOR',
-    description: 'Configure a Kubernetes cluster and deploy a fleet of Node.js services...',
-    progress: 45,
-    tech: 'DevOps',
-    techIcon: <FaCloud className="text-gray-500" />,
-    actionText: 'View Project',
-    actionVariant: 'outline',
-  },
+  { id: 1, title: 'Build a Task Management API',    difficulty: 'SENIOR',    description: 'Architecture a high-performance RESTful API with complex relations, auth middleware, and rate limiting for enterprise-grade usage.', progress: 65, tech: 'Node.js', techIcon: <FaNodeJs className="text-green-600" />, actionText: 'View Project',  actionVariant: 'outline', avatars: ['https://i.pravatar.cc/150?u=1'], avatarExtra: '+4' },
+  { id: 2, title: 'E-commerce Checkout Flow',        difficulty: 'JUNIOR',    description: 'Design and implement a multi-step checkout experience using React with cart state, coupon codes, and Stripe-style payment UI.', progress: 12, tech: 'React',   techIcon: <FaReact className="text-blue-500" />,   actionText: 'View Project',  actionVariant: 'outline', avatars: ['https://i.pravatar.cc/150?u=2'] },
+  { id: 3, title: 'Real-time Data Dashboard',        difficulty: 'MID-LEVEL', description: 'Develop a socket-based dashboard that visualizes live crypto-market data with WebSocket feeds, charts, and alert thresholds.', progress: 0,  tech: 'Python',  techIcon: <FaPython className="text-yellow-500" />, actionText: 'Start Project', actionVariant: 'primary',  isNew: true },
+  { id: 4, title: 'CLI Portfolio Manager',           difficulty: 'MID-LEVEL', description: 'Build a robust command-line tool for managing investment portfolios with live price fetching, P&L reports, and export to CSV.', progress: 100,tech: 'Rust',    techIcon: <FaRust className="text-orange-600" />,   actionText: 'Review Docs',   actionVariant: 'outline' },
+  { id: 5, title: 'Microservices Orchestrator',      difficulty: 'SENIOR',    description: 'Configure a Kubernetes cluster and deploy a fleet of Node.js services with service discovery, load balancing, and health checks.', progress: 45, tech: 'DevOps',  techIcon: <FaCloud className="text-gray-500" />,    actionText: 'View Project',  actionVariant: 'outline' },
+  { id: 6, title: 'AI Code Review Assistant',        difficulty: 'SENIOR',    description: 'Integrate OpenAI APIs to build a GitHub bot that reviews PRs, suggests improvements, and enforces coding standards automatically.', progress: 20, tech: 'Python',  techIcon: <FaPython className="text-yellow-500" />, actionText: 'Start Project', actionVariant: 'primary',  isNew: true },
+  { id: 7, title: 'Authentication Microservice',     difficulty: 'MID-LEVEL', description: 'Build a standalone JWT-based auth service with refresh tokens, role-based access control, and secure session management.', progress: 80, tech: 'Node.js', techIcon: <FaNodeJs className="text-green-600" />, actionText: 'View Project',  actionVariant: 'outline', avatars: ['https://i.pravatar.cc/150?u=5'], avatarExtra: '+2' },
+  { id: 8, title: 'Component Design System',         difficulty: 'JUNIOR',    description: 'Build a reusable React component library from scratch — buttons, modals, tooltips — with Storybook docs and accessibility support.', progress: 55, tech: 'React',   techIcon: <FaReact className="text-blue-500" />,   actionText: 'View Project',  actionVariant: 'outline' },
+  { id: 9, title: 'Serverless Image Pipeline',       difficulty: 'MID-LEVEL', description: 'Design an AWS Lambda-powered pipeline that resizes, compresses, and CDN-delivers images on upload with zero server maintenance.', progress: 0,  tech: 'DevOps',  techIcon: <FaCloud className="text-gray-500" />,    actionText: 'Start Project', actionVariant: 'primary' },
+  { id: 10,title: 'GraphQL API Gateway',             difficulty: 'SENIOR',    description: 'Consolidate multiple REST services behind a single GraphQL gateway with schema stitching, query batching, and caching layers.', progress: 30, tech: 'Node.js', techIcon: <FaNodeJs className="text-green-600" />, actionText: 'View Project',  actionVariant: 'outline', avatars: ['https://i.pravatar.cc/150?u=8'], avatarExtra: '+1' },
+];
+
+const TOP_CONTRIBUTORS = [
+  { name: 'Elena Soroka',  projects: 19, avatar: 'https://i.pravatar.cc/150?u=21', badge: '🥇' },
+  { name: 'Marcus Chen',   projects: 14, avatar: 'https://i.pravatar.cc/150?u=20', badge: '🥈' },
+  { name: 'Riya Sharma',   projects: 11, avatar: 'https://i.pravatar.cc/150?u=33', badge: '🥉' },
+  { name: 'Aiden Cole',    projects: 9,  avatar: 'https://i.pravatar.cc/150?u=34', badge: ''   },
+  { name: 'Priya Nair',    projects: 8,  avatar: 'https://i.pravatar.cc/150?u=35', badge: ''   },
 ];
 
 export const ProjectsPage = () => {
@@ -121,6 +80,23 @@ export const ProjectsPage = () => {
             <span className="text-gray-500 tracking-wider text-xs">COMPLETED</span>
           </div>
         </div>
+      </div>
+
+      {/* Stats Bar */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
+        {[
+          { label: 'Total Projects', value: '60+',  color: 'text-primary',    bg: 'bg-indigo-50'  },
+          { label: 'Active',         value: '12',   color: 'text-green-600',  bg: 'bg-green-50'   },
+          { label: 'Completed',      value: '48',   color: 'text-gray-900',   bg: 'bg-gray-50'    },
+          { label: 'Contributors',   value: '340+', color: 'text-purple-600', bg: 'bg-purple-50'  },
+        ].map(s => (
+          <div key={s.label} className={`${s.bg} rounded-2xl p-4 border border-gray-100 flex items-center gap-3`}>
+            <div>
+              <p className={`text-2xl font-extrabold ${s.color}`}>{s.value}</p>
+              <p className="text-xs text-gray-500 font-medium">{s.label}</p>
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Tabs & Filters */}
@@ -246,6 +222,26 @@ export const ProjectsPage = () => {
           <div className="absolute right-4 top-4 opacity-10">
             <FiPlay size={120} />
           </div>
+        </div>
+      </div>
+
+      {/* Community Contributors */}
+      <div className="mt-12 mb-10 bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h2 className="text-xl font-bold text-gray-900">Top Contributors This Month</h2>
+            <p className="text-sm text-gray-500">Engineers leading the Atelier by project completions.</p>
+          </div>
+        </div>
+        <div className="space-y-3">
+          {TOP_CONTRIBUTORS.map((c, i) => (
+            <div key={i} className="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition-colors">
+              <span className="text-base w-6 text-center">{c.badge || <span className="text-sm font-bold text-gray-400">#{i + 1}</span>}</span>
+              <img src={c.avatar} alt={c.name} className="w-9 h-9 rounded-full" />
+              <p className="flex-1 text-sm font-bold text-gray-900">{c.name}</p>
+              <span className="text-sm font-bold text-primary">{c.projects} projects</span>
+            </div>
+          ))}
         </div>
       </div>
 
