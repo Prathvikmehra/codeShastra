@@ -128,11 +128,19 @@ export const ProfilePage = () => {
       <div className="flex flex-col sm:flex-row items-start gap-6 mb-10">
         {/* Avatar */}
         <div className="relative flex-shrink-0">
-          <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-3xl font-extrabold text-white shadow-lg">
-            {initials}
-          </div>
+          {authUser?.avatar ? (
+            <img
+              src={authUser.avatar}
+              alt={name}
+              className="w-24 h-24 rounded-2xl object-cover shadow-lg border-2 border-white"
+            />
+          ) : (
+            <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-3xl font-extrabold text-white shadow-lg">
+              {initials}
+            </div>
+          )}
           <button
-            onClick={() => toast('Avatar upload coming soon!', { icon: '📷' })}
+            onClick={() => navigate('/profile/edit')}
             className="absolute -bottom-2 -right-2 w-7 h-7 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-sm hover:bg-gray-50 transition-colors"
           >
             <FiCamera size={13} className="text-gray-500" />

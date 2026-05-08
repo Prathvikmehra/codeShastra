@@ -9,6 +9,18 @@
 
 ---
 
+## 🔗 Project Links
+
+| Resource | Link |
+| :--- | :--- |
+| 🌐 **Live Demo (Frontend)** | [code-shastra-dncn.vercel.app](https://code-shastra-dncn.vercel.app/) |
+| 🎨 **Figma Design** | [View Design on Figma](https://www.figma.com/design/dvPmDVIj5uXPTxQoyFWPgS/Untitled?node-id=0-1&t=ht6xeZR9QqdkhbQ0-1) |
+| 📺 **YouTube Demo** | [Watch Demo Video](https://www.youtube.com/watch?v=9mZDa9Inezg) |
+| ⚙️ **Backend API** | [codeshastra-backend.onrender.com/api](https://codeshastra-backend.onrender.com/api) |
+| 📮 **Postman API Docs** | [View API Documentation](https://documenter.getpostman.com/view/50841552/2sBXqKofJu) |
+
+---
+
 ## 📌 Problem Statement
 
 > **Why do fresh graduates lack practical coding skills despite strong academic performance?**
@@ -43,7 +55,7 @@ The root cause is clear:
 
 ## 🎨 UI/UX Design
 
-> 🖼️ **[View Figma Design →](https://www.figma.com/design/dvPmDVIj5uXPTxQoyFWPgS/Untitled?node-id=0-1&t=glzVZNJcZuBQDbxK-1)**
+> 🖼️ **[View Figma Design →](https://www.figma.com/design/dvPmDVIj5uXPTxQoyFWPgS/Untitled?node-id=0-1&t=ht6xeZR9QqdkhbQ0-1)**
 
 ---
 

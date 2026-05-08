@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUser, updateUser } from '@/store/slices/authSlice';
@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
 import { Helmet } from 'react-helmet-async';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useDropzone } from 'react-dropzone';
 import authService from '@/services/authService';
 
 const SPECIALIZATIONS = ['Full Stack Engineering', 'Frontend Engineering', 'Backend Engineering', 'DevOps / Cloud', 'Machine Learning', 'System Design', 'Mobile Development'];
@@ -81,6 +82,28 @@ export const EditProfilePage = () => {
   const dispatch = useDispatch();
   const authUser = useSelector(selectUser);
 
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState(authUser?.avatar || null);
+
+  const onDrop = useCallback(acceptedFiles => {
+    const file = acceptedFiles[0];
+    if (file) {
+      setAvatarFile(file);
+      setAvatarPreview(URL.createObjectURL(file));
+    }
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
+    onDrop,
+    accept: { 'image/jpeg': [], 'image/png': [] },
+    maxSize: 2097152, // 2MB
+    multiple: false
+  });
+
+  if (fileRejections.length > 0) {
+    toast.error('File rejected. Please ensure it is a JPG/PNG and under 2MB.');
+  }
+
   const formik = useFormik({
     initialValues: {
       name:          authUser?.name  || '',
@@ -104,9 +127,17 @@ export const EditProfilePage = () => {
     onSubmit: async (values, { setSubmitting }) => {
       try {
         // 1. Save to backend
-        const updatedUser = await authService.updateProfile(values);
+        let updatedUser = await authService.updateProfile(values);
         
-        // 2. Update Redux
+        // 2. Upload avatar if selected
+        if (avatarFile) {
+          const formData = new FormData();
+          formData.append('avatar', avatarFile);
+          const avatarResponse = await authService.updateAvatar(formData);
+          updatedUser = { ...updatedUser, ...avatarResponse };
+        }
+        
+        // 3. Update Redux
         dispatch(updateUser(updatedUser));
         
         toast.success('Profile settings saved!');
@@ -167,24 +198,29 @@ export const EditProfilePage = () => {
             {/* Avatar Upload */}
             <div className="flex items-center gap-4 mb-6">
               <div className="relative flex-shrink-0">
-                <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-2xl font-extrabold text-white">
-                  {formik.values.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2) || 'CS'}
-                </div>
+                {avatarPreview ? (
+                  <img src={avatarPreview} alt="Avatar Preview" className="w-16 h-16 rounded-xl object-cover" />
+                ) : (
+                  <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-2xl font-extrabold text-white">
+                    {formik.values.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2) || 'CS'}
+                  </div>
+                )}
                 <div className="absolute -bottom-1.5 -right-1.5 w-6 h-6 bg-white border border-gray-200 rounded-full flex items-center justify-center">
                   <FiCamera size={11} className="text-gray-500" />
                 </div>
               </div>
-              <div>
-                <div className="flex gap-2 mb-1">
-                  <button onClick={() => toast('File upload coming soon!', { icon: '📷' })} className="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-colors">
-                    <FiCamera size={12} /> Update Photo
-                  </button>
-                  <button onClick={() => toast('Photo removed', { icon: '🗑️' })} className="text-xs font-semibold border border-gray-200 text-gray-600 px-3 py-1.5 rounded-lg hover:bg-gray-50 transition-colors">
-                    Remove
-                  </button>
-                </div>
-                <p className="text-xs text-gray-400">JPG, GIF or PNG. Max size of 2MB.</p>
+              <div {...getRootProps()} className={`flex-1 border-2 border-dashed rounded-xl p-4 transition-colors cursor-pointer text-center ${isDragActive ? 'border-indigo-500 bg-indigo-50' : 'border-gray-200 hover:border-indigo-400'}`}>
+                <input {...getInputProps()} />
+                <p className="text-xs text-gray-500 font-semibold mb-1">
+                  {isDragActive ? 'Drop image here...' : 'Drag & drop an image, or click to browse'}
+                </p>
+                <p className="text-[10px] text-gray-400">JPG or PNG. Max size of 2MB.</p>
               </div>
+              {avatarPreview && (
+                <button type="button" onClick={() => { setAvatarPreview(null); setAvatarFile(null); }} className="text-xs font-semibold border border-gray-200 text-red-600 px-3 py-1.5 rounded-lg hover:bg-red-50 transition-colors">
+                  Remove
+                </button>
+              )}
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
