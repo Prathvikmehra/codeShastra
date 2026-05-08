@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 
 // Route Imports
 const authRoutes = require('./src/routes/authRoutes');
@@ -11,9 +12,13 @@ const submissionRoutes = require('./src/routes/submissionRoutes');
 
 const app = express();
 
+const passport = require('passport');
+
 // Middlewares
 app.use(cors());
 app.use(express.json()); // Built-in body parser
+app.use(passport.initialize());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Mount Routes
 app.use('/api/auth', authRoutes);
