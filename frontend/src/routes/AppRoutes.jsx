@@ -17,7 +17,6 @@ const CoursesPage = lazy(() => import('@/pages/Labs/CoursesPage'));
 const ProjectsPage = lazy(() => import('@/pages/Projects/ProjectsPage'));
 const ProjectDetail = lazy(() => import('@/pages/Projects/ProjectDetail'));
 const ProjectWorkspace = lazy(() => import('@/pages/Projects/ProjectWorkspace'));
-// const ChallengesPage = lazy(() => import('@/pages/Challenges/ChallengesPage'));
 const ChallengesPage = lazy(() => import('@/pages/Challenges/ChallengesPage'));
 const ChallengeDetail = lazy(() => import('@/pages/Challenges/ChallengeDetail'));
 const CodingRoom = lazy(() => import('@/pages/Challenges/CodingRoom'));
