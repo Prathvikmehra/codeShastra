@@ -23,6 +23,19 @@ export const LoginPage = () => {
   // Redirect back to the page the user tried to visit, or dashboard
   const from = location.state?.from?.pathname || ROUTES.DASHBOARD;
 
+  // Show error from OAuth redirect failures
+  const queryError = new URLSearchParams(location.search).get('error');
+
+  const BACKEND_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${BACKEND_URL}/api/auth/google`;
+  };
+
+  const handleGithubLogin = () => {
+    window.location.href = `${BACKEND_URL}/api/auth/github`;
+  };
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -67,11 +80,33 @@ export const LoginPage = () => {
         </p>
       </div>
 
+      {/* OAuth error from redirect */}
+      {queryError && (
+        <div className="flex items-start gap-2.5 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm mb-4">
+          <FiAlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+          <span>{queryError}</span>
+        </div>
+      )}
+
       <div className="flex flex-col gap-3 mb-6">
-        <Button variant="outline" fullWidth leftIcon={<FcGoogle size={20} />} className="border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400">
+        <Button
+          variant="outline"
+          fullWidth
+          leftIcon={<FcGoogle size={20} />}
+          className="border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+          onClick={handleGoogleLogin}
+          type="button"
+        >
           Log in with Google
         </Button>
-        <Button variant="outline" fullWidth leftIcon={<FiGithub size={20} />} className="border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400">
+        <Button
+          variant="outline"
+          fullWidth
+          leftIcon={<FiGithub size={20} />}
+          className="border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+          onClick={handleGithubLogin}
+          type="button"
+        >
           Log in with GitHub
         </Button>
       </div>
