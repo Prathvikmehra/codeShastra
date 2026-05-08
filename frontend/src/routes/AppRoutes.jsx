@@ -27,6 +27,7 @@ const EditProfilePage = lazy(() => import('@/pages/Profile/EditProfilePage'));
 const SettingsPage = lazy(() => import('@/pages/Settings/SettingsPage'));
 const DeleteAccountPage = lazy(() => import('@/pages/Settings/DeleteAccountPage'));
 const SupportPage = lazy(() => import('@/pages/Support/SupportPage'));
+const OAuthCallback = lazy(() => import('@/pages/Auth/OAuthCallback'));
 
 // ── Loading Fallback ───────────────────────────────────────────
 const PageLoader = () => (
@@ -53,6 +54,7 @@ function AppRoutes() {
       <Routes>
         {/* Public Routes */}
         <Route path={ROUTES.HOME} element={<HomePage />} />
+        <Route path="/auth/callback" element={<OAuthCallback />} />
 
         {/* Auth Routes — redirect if already logged in */}
         <Route element={<PublicOnlyRoute />}>

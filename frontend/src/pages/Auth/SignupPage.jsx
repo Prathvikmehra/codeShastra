@@ -19,6 +19,16 @@ export const SignupPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const BACKEND_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${BACKEND_URL}/api/auth/google`;
+  };
+
+  const handleGithubLogin = () => {
+    window.location.href = `${BACKEND_URL}/api/auth/github`;
+  };
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -66,10 +76,24 @@ export const SignupPage = () => {
       </div>
 
       <div className="flex flex-col gap-3 mb-6">
-        <Button variant="outline" fullWidth leftIcon={<FcGoogle size={20} />} className="border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400">
+        <Button
+          variant="outline"
+          fullWidth
+          leftIcon={<FcGoogle size={20} />}
+          className="border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+          onClick={handleGoogleLogin}
+          type="button"
+        >
           Sign up with Google
         </Button>
-        <Button variant="outline" fullWidth leftIcon={<FiGithub size={20} />} className="border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400">
+        <Button
+          variant="outline"
+          fullWidth
+          leftIcon={<FiGithub size={20} />}
+          className="border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+          onClick={handleGithubLogin}
+          type="button"
+        >
           Sign up with GitHub
         </Button>
       </div>
