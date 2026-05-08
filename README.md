@@ -53,11 +53,6 @@ The root cause is clear:
 
 ---
 
-## 🎨 UI/UX Design
-
-> 🖼️ **[View Figma Design →](https://www.figma.com/design/dvPmDVIj5uXPTxQoyFWPgS/Untitled?node-id=0-1&t=ht6xeZR9QqdkhbQ0-1)**
-
----
 
 ## 🏗️ Tech Stack
 
