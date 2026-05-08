@@ -18,7 +18,12 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, 'Please add a password'],
+      required: [
+        function() {
+          return !this.googleId && !this.githubId;
+        }, 
+        'Please add a password'
+      ],
       minlength: 6,
       select: false, // Don't return password by default
     },
@@ -42,6 +47,14 @@ const userSchema = new mongoose.Schema(
     github: {
       type: String,
       default: '',
+    },
+    googleId: {
+      type: String,
+      default: null,
+    },
+    githubId: {
+      type: String,
+      default: null,
     },
     specialization: {
       type: String,
@@ -99,7 +112,7 @@ const userSchema = new mongoose.Schema(
 
 // Encrypt password using bcrypt before saving
 userSchema.pre('save', async function () {
-  if (!this.isModified('password')) {
+  if (!this.isModified('password') || !this.password) {
     return;
   }
 

@@ -45,6 +45,35 @@ const updateProfile = async (req, res, next) => {
   }
 };
 
+// @desc    Update user avatar
+// @route   PUT /api/users/avatar
+// @access  Private
+const updateAvatar = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      res.status(400);
+      throw new Error('No file uploaded');
+    }
+
+    const user = await User.findById(req.user.id);
+    if (user) {
+      // e.g. /uploads/avatar-12345.jpg
+      const avatarPath = `http://localhost:5000/uploads/${req.file.filename}`;
+      user.avatar = avatarPath;
+      await user.save();
+
+      res.json({
+        avatar: user.avatar,
+      });
+    } else {
+      res.status(404);
+      throw new Error('User not found');
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 // @desc    Delete user account
 // @route   DELETE /api/users/account
 // @access  Private
@@ -81,6 +110,7 @@ const getLeaderboard = async (req, res, next) => {
 
 module.exports = {
   updateProfile,
+  updateAvatar,
   deleteAccount,
   getLeaderboard,
 };
